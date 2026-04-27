@@ -4,26 +4,29 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js";
 
-app.use("/api/auth", authRoutes);
 dotenv.config();
 
+// ✅ CREATE APP FIRST
 const app = express();
 
-// Middleware
-app.use(cors());
+// ✅ MIDDLEWARE
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
-// Test route
+// ✅ ROUTES (AFTER app is created)
+app.use("/api/auth", authRoutes);
+
+// ✅ TEST ROUTE
 app.get("/", (req, res) => {
   res.send("RecallAI Backend Running 🚀");
 });
 
-// MongoDB connect
+// ✅ DB CONNECTION
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log("Mongo error:", err.message));
 
-// Start server
+// ✅ START SERVER
 app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
+  console.log("Server running on port 5000");
 });
